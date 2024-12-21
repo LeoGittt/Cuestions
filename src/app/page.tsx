@@ -9,7 +9,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/Componen
 import CorazonAnimado from '@/Components/CorazonAnimado'
 
 const preguntas = [
-  { pregunta: "¿En qué fecha nos conocimos? (DD/MM/YYYY)", respuesta: "01/01/2023", opciones: ["01/01/2023", "14/02/2022", "25/12/2021", "10/11/2020"] },
+  { pregunta: "¿En qué fecha nos conocimos? (DD/MM/YYYY)", respuesta: "01/01/2024", opciones: ["01/01/2023", "14/02/2022", "25/12/2021", "10/11/2020"] },
   { pregunta: "¿Cuál es mi comida favorita?", respuesta: "pizza", opciones: ["pizza", "hamburguesa", "sushi", "tacos"] },
   { pregunta: "¿Cuál es el nombre de nuestra canción?", respuesta: "perfect", opciones: ["perfect", "shallow", "blinding lights", "thinking out loud"] },
   { pregunta: "¿En qué ciudad tuvimos nuestra primera cita?", respuesta: "madrid", opciones: ["madrid", "barcelona", "paris", "roma"] },
