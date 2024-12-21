@@ -1,101 +1,130 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import confetti from 'canvas-confetti'
+import { Button } from "@/Components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card"
+
+import CorazonAnimado from '@/Components/CorazonAnimado'
+
+const preguntas = [
+  { pregunta: "¿En qué fecha nos conocimos? (DD/MM/YYYY)", respuesta: "01/01/2023", opciones: ["01/01/2023", "14/02/2022", "25/12/2021", "10/11/2020"] },
+  { pregunta: "¿Cuál es mi comida favorita?", respuesta: "pizza", opciones: ["pizza", "hamburguesa", "sushi", "tacos"] },
+  { pregunta: "¿Cuál es el nombre de nuestra canción?", respuesta: "perfect", opciones: ["perfect", "shallow", "blinding lights", "thinking out loud"] },
+  { pregunta: "¿En qué ciudad tuvimos nuestra primera cita?", respuesta: "madrid", opciones: ["madrid", "barcelona", "paris", "roma"] },
+  { pregunta: "¿Cuál es mi película favorita?", respuesta: "titanic", opciones: ["titanic", "inception", "the dark knight", "the godfather"] },
+  { pregunta: "¿Cuál es mi color favorito?", respuesta: "azul", opciones: ["azul", "rojo", "verde", "amarillo"] },
+  { pregunta: "¿Cuál es el nombre de mi mejor amigo?", respuesta: "juan", opciones: ["juan", "pedro", "andrés", "luis"] },
+  { pregunta: "¿Qué deporte me gusta más?", respuesta: "fútbol", opciones: ["fútbol", "baloncesto", "tenis", "natación"] },
+  { pregunta: "¿Cuál es mi actor favorito?", respuesta: "leonardo dicaprio", opciones: ["leonardo dicaprio", "brad pitt", "will smith", "johnny depp"] },
+  { pregunta: "¿En qué país nací?", respuesta: "argentina", opciones: ["argentina", "chile", "uruguay", "colombia"] },
+  { pregunta: "¿Cuál es mi libro favorito?", respuesta: "cien años de soledad", opciones: ["cien años de soledad", "1984", "el gran gatsby", "harry potter"] },
+  { pregunta: "¿Qué instrumento musical toco?", respuesta: "guitarra", opciones: ["guitarra", "piano", "batería", "violín"] },
+  { pregunta: "¿Cuál es mi serie favorita?", respuesta: "breaking bad", opciones: ["breaking bad", "game of thrones", "stranger things", "friends"] },
+  { pregunta: "¿Qué tipo de música me gusta más?", respuesta: "rock", opciones: ["rock", "pop", "electrónica", "reggaeton"] }
+];
+
+export default function DesafioRomantico() {
+  const [preguntaActual, setPreguntaActual] = useState(0)
+  const [respuestas, setRespuestas] = useState<string[]>([])
+  const [mostrarPropuesta, setMostrarPropuesta] = useState(false)
+  const [respuestaPropuesta, setRespuestaPropuesta] = useState<boolean | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  const handleRespuesta = (respuestaSeleccionada: string) => {
+    if (respuestaSeleccionada.toLowerCase() === preguntas[preguntaActual].respuesta.toLowerCase()) {
+      setRespuestas([...respuestas, respuestaSeleccionada])
+      setError(null)
+      if (preguntaActual < preguntas.length - 1) {
+        setPreguntaActual(preguntaActual + 1)
+      } else {
+        setMostrarPropuesta(true)
+      }
+    } else {
+      setError('¡Ups! Esa no es la respuesta correcta. Inténtalo de nuevo.')
+    }
+  }
+
+  const handlePropuesta = (respuesta: boolean) => {
+    setRespuestaPropuesta(respuesta)
+    if (respuesta) {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { x: 0.5, y: 0.6 }
+      })
+    }
+  }
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 p-4">
+      <Card className="w-full max-w-md shadow-xl">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold text-center">
+            {mostrarPropuesta ? "Una pregunta especial" : `Desafío de Amor - Pregunta ${preguntaActual + 1}`}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <AnimatePresence mode="wait">
+            {!mostrarPropuesta ? (
+              <motion.div
+                key={preguntaActual}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="space-y-4"
+              >
+                <p className="text-lg text-center font-mono font-semibold mb-6">
+                  {preguntas[preguntaActual].pregunta}
+                </p>
+                <div className="space-y-2">
+                 
+                  <div className="space-y-2 font-mono">
+                    {preguntas[preguntaActual].opciones.map((opcion, index) => (
+                      <Button
+                        key={index}
+                        onClick={() => handleRespuesta(opcion)}
+                        className="w-full bg-gradient-to-r text-gray-900 from-pink-300 via-purple-300 to-indigo-400 p-4"
+                      >
+                        {opcion}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                {error && <p className="text-red-500 text-sm">{error}</p>}
+              </motion.div>
+            ) : respuestaPropuesta === null ? (
+              <motion.p
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-xl text-center font-bold mb-4"
+              >
+                ¡Has superado el desafío! Ahora, la pregunta más importante: ¿Quieres ser mi novia?
+              </motion.p>
+            ) : (
+              <motion.p
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-xl text-center font-bold mb-4"
+              >
+                {respuestaPropuesta ? "¡Qué felicidad! Nuestro amor ha superado todas las pruebas. 💖" : "Oh... Entiendo. Gracias por tu honestidad. 😢"}
+              </motion.p>
+            )}
+          </AnimatePresence>
+        </CardContent>
+        <CardFooter className="flex justify-center space-x-4 ">
+          {!mostrarPropuesta ? (
+            <Button className='bg-gradient-to-r text-gray-700 from-pink-300 via-purple-300 to-indigo-400 p-4' onClick={() => handleRespuesta('')}>Responder</Button>
+          ) : respuestaPropuesta === null ? (
+            <>
+              <Button onClick={() => handlePropuesta(true)} className="bg-green-500 hover:bg-green-600">Sí</Button>
+              <Button onClick={() => handlePropuesta(false)} className="bg-red-500 hover:bg-red-600">No</Button>
+            </>
+          ) : null}
+        </CardFooter>
+      </Card>
+      {respuestaPropuesta === true && <CorazonAnimado />}
     </div>
-  );
+  )
 }
